@@ -1,3 +1,10 @@
+# Cmake stuff
+build
+
+# Emacs crap
+*~
+\#*
+
 # Compiled Object files
 *.slo
 *.lo
