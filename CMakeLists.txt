@@ -9,3 +9,10 @@ project(cpp-sandbox)
 add_definitions("-c")
 
 add_executable(cpp-sandbox main.cpp)
+
+enable_testing()
+
+# Include the macro to build compile time failure tests.
+include(static_fail.cmake)
+
+add_fail_test(fail.cpp 2 cpp-sandbox)
