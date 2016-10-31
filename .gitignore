@@ -3,7 +3,7 @@ build
 
 # Emacs crap
 *~
-\#*
+*#*
 
 # Compiled Object files
 *.slo
