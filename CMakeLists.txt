@@ -2,7 +2,7 @@
 cmake_minimum_required(VERSION 2.6)
 set(CMAKE_C_COMPILER clang-3.5)
 set(CMAKE_CXX_COMPILER clang++-3.5)
-set(CMAKE_CXX_FLAGS "-Wall -std=c++14")
+set(CMAKE_CXX_FLAGS "-Wall --std=c++14 -stdlib=libc++")
 
 project(cpp-sandbox)
 
@@ -13,3 +13,5 @@ add_definitions("-c")
 add_executable(cpp-sandbox main.cpp)
 
 add_subdirectory(compile-failure-tests)
+
+add_subdirectory(static-loop-unrollers)
