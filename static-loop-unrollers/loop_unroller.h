@@ -1,14 +1,16 @@
-// Copyright (C) 2016 Apple Inc. All Rights Reserved.
+// Copyright (C) 2016 Ammar Husain. All Rights Reserved.
 
 #pragma once
 
 #include <type_traits>
 #include <functional>
 
+using namespace std;
+
 namespace loop_unroller {
 
-template <bool b, class T = void>
-using enable_if_t = typename std::enable_if<b, T>::type;
+// template <bool b, class T = void>
+// using enable_if_t = typename std::enable_if<b, T>::type;
 
 // ---
 // Loop Params struct
@@ -127,42 +129,30 @@ struct LoopParams {
 /// loop index is within the bounds of the start & end indices (Eg: less than,
 /// greater than or equal to etc.). The modifier functor increments the current
 /// loop index to a new loop index, given its change value, and returns the new
-/// loop index (Eg: plus, minus, multiplies, divides etc.). Some sample
-/// comparator & modifier functors are provided as constexpr functions in the
-/// functional.h file of this library. C++14 includes these in the standard
-/// library (STL functional). Recursion for the ForLoop function is stopped
+/// loop index (Eg: plus, minus, multiplies, divides etc.).
+/// Recursion for the ForLoop function is stopped
 /// using the enable_if concept of SFINAE (Substitution Failure Is Not An Error)
 /// that checks where the LoopParams structure being currently operated on is
 /// within range of the start & end indices (using the comparator).
 /// \n
+/// The loop unroller expects a user defined functor/ lambda
+/// that it can call at each iteration of the loop. An
+/// std::integral_constant containing the value of the current loop index is
+/// passed as the first argument to the functor being invoked. Users are free to
+/// define multiple additional arguments in the functor that are passed through
+/// variadic templates with perfect forwarding.
 /// Example code:
 /// \code{.cpp}
 /// loop_unroller::ForLoop(loop_unroller::LoopParams<1, 64, 2, std::less_equal<int>,
 /// std::multiplies<int>>(),
-/// MyFunctor{}, 3.14);
-/// \endcode
-/// \n
-/// The loop unroller expects a user defined functor (MyFunctor from example
-/// above) that it can call at each iteration of the loop. An
-/// std::integral_constant containing the value of the current loop index is
-/// passed as the first argument to the functor being invoked. Users are free to
-/// define multiple additional arguments in the functor that are passed through
-/// variadic templates with perfect forwarding. Below is an example of a
-/// functor:
-/// \n
-/// \code{.cpp}
-/// struct MyFunctor {
-///   template<typename I>
-///   operator()(I, float a) {
+/// [](auto idx, float a){
+/// using I=decltype(idx);
 ///     DiagonalMatrix<float, I::value> d_mat;
 ///     d_mat.diagonal() = Vector<I::value>::Ones * a;
-///   }
-/// }
+/// }, 3.14);
 /// \endcode
 /// \n
-/// In the example above, MyFunctor is a function object that gets called with
-/// an integral_constant (I) that holds the current static integer value of the
-/// loop index that was unrolled. The function object above uses the
+/// The function object above uses the
 /// integral_constant to instantitate a square matrix of size equal to the
 /// current loop index. It also takes in a floating point number a (passed in
 /// with variadic number of arguments) that is used to initialize the diagonal

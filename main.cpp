@@ -1,4 +1,4 @@
-// Copyright (C) 2016 Apple Inc. All Rights Reserved.
+// Copyright (C) 2016 Ammar Husain. All Rights Reserved.
 /// \author: Ammar Husain (mrahusain@gmail.com)
 
 #include <iostream>  // std::cout
