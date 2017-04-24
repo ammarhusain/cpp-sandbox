@@ -21,3 +21,5 @@ add_executable(cpp-sandbox main.cpp)
 add_subdirectory(compile-failure-tests)
 
 add_subdirectory(streams-gcc-bug)
+
+add_subdirectory(template-specialization)
