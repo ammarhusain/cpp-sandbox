@@ -1,0 +1,4 @@
+# Throws an exception with libstdc++ (gnu c++ library)
+clang++-3.8 -stdlib=libc++ -g main.cpp -o stream-test
+# Works fine with the llvm c++ library.
+clang++-3.8 -stdlib=libc++ -g main.cpp -o stream-test
